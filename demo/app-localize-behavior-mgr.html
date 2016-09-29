@@ -1,0 +1,44 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<dom-module id="app-localize-behavior-mgr">
+  <template>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: "app-localize-behavior-mgr",
+      properties: {
+        _instances: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        _lastLanguage: String
+      },
+
+      listeners: {
+        'app-localize-behavior-ready': '__addInstance',
+        'app-language-changed': '__changeLanguage'
+      },
+
+      __addInstance(event) {
+        this.push('_instances', event.detail);
+      },
+
+      __changeLanguage(event) {
+        var language = event.detail;
+        if (language === this._lastLanguage) {
+          return;
+        }
+
+        this._lastLanguage = language;
+
+        this._instances.forEach(function (instance) {
+          instance.language = language;
+        });
+      }
+    });
+  </script>
+</dom-module>
